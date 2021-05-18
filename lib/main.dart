@@ -52,46 +52,73 @@ class _HomeState extends State<Home> {
     return Scaffold(
       body: SafeArea(
         child: Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height: 50,
-              ),
-              Text(
-                "$points/100",
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
-              ),
-              Text(
-                "Points",
-                style: TextStyle(fontSize: 16),
-              ),
-              SizedBox(
-                height: 70,
-              ),
-              Container(
-                color: Colors.white,
-                margin: EdgeInsets.symmetric(horizontal: 10),
-                child: GridView.count(
-                  crossAxisCount: 4,
-                  crossAxisSpacing: 4.0,
-                  mainAxisSpacing: 4.0,
-                  shrinkWrap: true,
-                  children: List.generate(
-                    visiblePairs.length,
-                    (index) => Tile(
-                      imageAssetPath: visiblePairs[index].getImageAssetPath(),
-                      parent: this,
-                      index: index,
+          child: points == 800
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Center(child: Image.asset("assets/win.gif")),
+                    SizedBox(
+                      height: 20,
                     ),
-                  ),
+                    Container(
+                      padding:
+                          EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                      decoration: BoxDecoration(
+                        color: Colors.blueAccent,
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        "Replay",
+                        style: TextStyle(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.white,
+                        ),
+                      ),
+                    )
+                  ],
+                )
+              : Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: 50,
+                    ),
+                    Text(
+                      "$points/100",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 25,
+                      ),
+                    ),
+                    Text(
+                      "Points",
+                      style: TextStyle(fontSize: 16),
+                    ),
+                    SizedBox(
+                      height: 70,
+                    ),
+                    Container(
+                      color: Colors.white,
+                      margin: EdgeInsets.symmetric(horizontal: 10),
+                      child: GridView.count(
+                        crossAxisCount: 4,
+                        crossAxisSpacing: 4.0,
+                        mainAxisSpacing: 4.0,
+                        shrinkWrap: true,
+                        children: List.generate(
+                          visiblePairs.length,
+                          (index) => Tile(
+                            imageAssetPath:
+                                visiblePairs[index].getImageAssetPath(),
+                            parent: this,
+                            index: index,
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
-              ),
-            ],
-          ),
         ),
       ),
     );
@@ -120,9 +147,10 @@ class _TileState extends State<Tile> {
                 pairs[widget.index].getImageAssetPath()) {
               //correct
               print("correct");
-
+              load = false;
               Future.delayed(Duration(seconds: 2), () {
                 points = points + 100;
+                load = true;
                 setState(() {});
                 widget.parent.setState(() {
                   pairs[widget.index].setImageAssetPath("");
@@ -132,8 +160,9 @@ class _TileState extends State<Tile> {
             } else {
               //wrong
               print("wrong");
-
+              load = false;
               Future.delayed(Duration(seconds: 2), () {
+                load = true;
                 widget.parent.setState(() {
                   pairs[widget.index].setIsSelected(false);
                   pairs[selectedTileIndex].setIsSelected(false);
