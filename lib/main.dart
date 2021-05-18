@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'data/data.dart';
 import 'model/tile_model.dart';
 
@@ -26,7 +27,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-
   List<TileModel> visiblePairs = [];
 
   @override
@@ -50,11 +50,6 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-//      appBar: AppBar(
-//        title: Text("Memory Game"),
-//        elevation: 0,
-//        centerTitle: true,
-//      ),
       body: SafeArea(
         child: Container(
           child: Column(
@@ -118,17 +113,51 @@ class _TileState extends State<Tile> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
-        if(load==true){
+      onTap: () {
+        if (load == true) {
+          if (selectedImageAssetPath != "") {
+            if (selectedImageAssetPath ==
+                pairs[widget.index].getImageAssetPath()) {
+              //correct
+              print("correct");
+
+              Future.delayed(Duration(seconds: 2), () {
+                points = points + 100;
+                setState(() {});
+                widget.parent.setState(() {
+                  pairs[widget.index].setImageAssetPath("");
+                  pairs[selectedTileIndex].setImageAssetPath("");
+                });
+              });
+            } else {
+              //wrong
+              print("wrong");
+
+              Future.delayed(Duration(seconds: 2), () {
+                widget.parent.setState(() {
+                  pairs[widget.index].setIsSelected(false);
+                  pairs[selectedTileIndex].setIsSelected(false);
+                });
+              });
+            }
+            selectedImageAssetPath = "";
+          } else {
+            selectedImageAssetPath = pairs[widget.index].getImageAssetPath();
+            selectedTileIndex = widget.index;
+          }
           setState(() {
             pairs[widget.index].setIsSelected(true);
           });
-          print ("you clicked me");
+          print("you clicked me");
         }
       },
       child: Container(
         margin: EdgeInsets.all(5),
-        child: Image.asset(pairs[widget.index].getIsSelected()?pairs[widget.index].getImageAssetPath():widget.imageAssetPath),
+        child: pairs[widget.index].getImageAssetPath() != ""
+            ? Image.asset(pairs[widget.index].getIsSelected()
+                ? pairs[widget.index].getImageAssetPath()
+                : widget.imageAssetPath)
+            : Image.asset("assets/check.png"),
       ),
     );
   }

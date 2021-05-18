@@ -1,6 +1,6 @@
 import '../model/tile_model.dart';
 
-int points =2;
+int points =0;
 bool load = false;
 String selectedImageAssetPath ="";
 int selectedTileIndex = 0;
