@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import 'data/data.dart';
 import 'model/tile_model.dart';
 
@@ -12,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Memory Booster',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -33,7 +33,10 @@ class _HomeState extends State<Home> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    restart();
+  }
 
+  void restart() {
     pairs = getPairs();
     pairs.shuffle();
 
@@ -60,32 +63,39 @@ class _HomeState extends State<Home> {
                     SizedBox(
                       height: 20,
                     ),
-                    Container(
-                      padding:
-                          EdgeInsets.symmetric(vertical: 12, horizontal: 24),
-                      decoration: BoxDecoration(
-                        color: Colors.blueAccent,
-                        borderRadius: BorderRadius.circular(10),
-                      ),
-                      child: Text(
-                        "Replay",
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white,
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          points = 0;
+                          restart();
+                        });
+                      },
+                      child: Container(
+                        padding:
+                            EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          "Replay",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     )
                   ],
                 )
               : Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     SizedBox(
                       height: 50,
                     ),
                     Text(
-                      "$points/100",
+                      "$points/800",
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
@@ -96,7 +106,7 @@ class _HomeState extends State<Home> {
                       style: TextStyle(fontSize: 16),
                     ),
                     SizedBox(
-                      height: 70,
+                      height: 60,
                     ),
                     Container(
                       color: Colors.white,
@@ -117,6 +127,50 @@ class _HomeState extends State<Home> {
                         ),
                       ),
                     ),
+                    SizedBox(
+                      height: 60,
+                    ),
+                    Text(
+                      "If you want to restart the game.",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    Text(
+                      "Click on ",
+                      style: TextStyle(
+                        fontSize: 15,
+                        color: Colors.red,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 7,),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          points = 0;
+                          restart();
+                        });
+                      },
+                      child: Container(
+                        padding:
+                        EdgeInsets.symmetric(vertical: 12, horizontal: 24),
+                        decoration: BoxDecoration(
+                          color: Colors.blueAccent,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Text(
+                          "Replay",
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    )
                   ],
                 ),
         ),
@@ -148,7 +202,7 @@ class _TileState extends State<Tile> {
               //correct
               print("correct");
               load = false;
-              Future.delayed(Duration(seconds: 2), () {
+              Future.delayed(Duration(milliseconds: 1500), () {
                 points = points + 100;
                 load = true;
                 setState(() {});
@@ -161,7 +215,7 @@ class _TileState extends State<Tile> {
               //wrong
               print("wrong");
               load = false;
-              Future.delayed(Duration(seconds: 2), () {
+              Future.delayed(Duration(milliseconds: 1500), () {
                 load = true;
                 widget.parent.setState(() {
                   pairs[widget.index].setIsSelected(false);
