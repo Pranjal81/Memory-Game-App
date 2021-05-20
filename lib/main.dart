@@ -204,7 +204,7 @@ class _TileState extends State<Tile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (load == true) {
+        if (load == true && !pairs[widget.index].getIsSelected()) {
           playLocalAsset("flip.mp3");
           if (selectedImageAssetPath != "" && selectedTileIndex != widget.index) {
             if (selectedImageAssetPath ==
