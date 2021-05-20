@@ -37,6 +37,7 @@ class _HomeState extends State<Home> {
   }
 
   void restart() {
+    playLocalAsset("start.wav");
     pairs = getPairs();
     pairs.shuffle();
 
@@ -67,6 +68,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                           points = 0;
+                          load=false;
                           restart();
                         });
                       },
@@ -91,6 +93,13 @@ class _HomeState extends State<Home> {
                 )
               : Column(
                   children: [
+//                    ElevatedButton(
+//                      onPressed: (){
+//                        print("sound play");
+//                        playLocalAsset("demo.wav");
+//                      },
+//                      child: Text("Sound"),
+//                    ),
                     SizedBox(
                       height: 50,
                     ),
@@ -109,7 +118,6 @@ class _HomeState extends State<Home> {
                       height: 60,
                     ),
                     Container(
-                      color: Colors.white,
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       child: GridView.count(
                         crossAxisCount: 4,
@@ -151,6 +159,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                           points = 0;
+                          load=false;
                           restart();
                         });
                       },
@@ -195,8 +204,9 @@ class _TileState extends State<Tile> {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        if (load == true) {
-          if (selectedImageAssetPath != "") {
+        if (load == true && !pairs[widget.index].getIsSelected()) {
+          playLocalAsset("flip.mp3");
+          if (selectedImageAssetPath != "" && selectedTileIndex != widget.index) {
             if (selectedImageAssetPath ==
                 pairs[widget.index].getImageAssetPath()) {
               //correct
@@ -204,6 +214,9 @@ class _TileState extends State<Tile> {
               load = false;
               Future.delayed(Duration(milliseconds: 1500), () {
                 points = points + 100;
+                if(points==800){
+                  playLocalAsset("win.wav");
+                }
                 load = true;
                 setState(() {});
                 widget.parent.setState(() {
