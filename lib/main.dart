@@ -68,6 +68,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                           points = 0;
+                          load=false;
                           restart();
                         });
                       },
@@ -158,6 +159,7 @@ class _HomeState extends State<Home> {
                       onTap: () {
                         setState(() {
                           points = 0;
+                          load=false;
                           restart();
                         });
                       },
@@ -204,7 +206,7 @@ class _TileState extends State<Tile> {
       onTap: () {
         if (load == true) {
           playLocalAsset("flip.mp3");
-          if (selectedImageAssetPath != "") {
+          if (selectedImageAssetPath != "" && selectedTileIndex != widget.index) {
             if (selectedImageAssetPath ==
                 pairs[widget.index].getImageAssetPath()) {
               //correct
