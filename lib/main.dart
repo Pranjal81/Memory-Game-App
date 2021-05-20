@@ -13,7 +13,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Memory Booster',
-      debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -38,6 +37,7 @@ class _HomeState extends State<Home> {
   }
 
   void restart() {
+    playLocalAsset("start.wav");
     pairs = getPairs();
     pairs.shuffle();
 
@@ -92,6 +92,13 @@ class _HomeState extends State<Home> {
                 )
               : Column(
                   children: [
+//                    ElevatedButton(
+//                      onPressed: (){
+//                        print("sound play");
+//                        playLocalAsset("demo.wav");
+//                      },
+//                      child: Text("Sound"),
+//                    ),
                     SizedBox(
                       height: 50,
                     ),
@@ -110,7 +117,6 @@ class _HomeState extends State<Home> {
                       height: 60,
                     ),
                     Container(
-                      color: Colors.white,
                       margin: EdgeInsets.symmetric(horizontal: 10),
                       child: GridView.count(
                         crossAxisCount: 4,
@@ -197,6 +203,7 @@ class _TileState extends State<Tile> {
     return GestureDetector(
       onTap: () {
         if (load == true) {
+          playLocalAsset("flip.mp3");
           if (selectedImageAssetPath != "") {
             if (selectedImageAssetPath ==
                 pairs[widget.index].getImageAssetPath()) {
@@ -205,6 +212,9 @@ class _TileState extends State<Tile> {
               load = false;
               Future.delayed(Duration(milliseconds: 1500), () {
                 points = points + 100;
+                if(points==800){
+                  playLocalAsset("win.wav");
+                }
                 load = true;
                 setState(() {});
                 widget.parent.setState(() {

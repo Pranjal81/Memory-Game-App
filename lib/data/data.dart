@@ -1,3 +1,4 @@
+import 'package:audioplayers/audioplayers.dart';
 import '../model/tile_model.dart';
 
 int points =0;
@@ -6,6 +7,11 @@ String selectedImageAssetPath ="";
 int selectedTileIndex = 0;
 
 List<TileModel> pairs = [];
+
+Future<AudioPlayer> playLocalAsset(String sound) async {
+  AudioCache cache = new AudioCache();
+  return await cache.play(sound);
+}
 
 List<TileModel> getPairs(){
   List <TileModel> pairs = [];
